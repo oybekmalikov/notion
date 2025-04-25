@@ -18,9 +18,8 @@ export class UserAuthService {
 	private async generateToken(user: User) {
 		const payload = {
 			id: user.id,
-			email: user.email,
-			roles: ["user"],
 			isActive: user.isActive,
+			role: "user",
 		};
 		return { token: this.jwtService.sign(payload) };
 	}
@@ -32,19 +31,19 @@ export class UserAuthService {
 		const hashedPassword = await bcrypt.hash(createUserDto.password, 7);
 		createUserDto.password = hashedPassword;
 		const newUser = await this.userService.create(createUserDto);
-		return newUser;
+		return `New user succesfully added with id: ${newUser.id}`;
 	}
 	async signIn(signInDto: SignInDto) {
 		const user = await this.userService.findByEmail(signInDto.email);
 		if (!user) {
-			throw new UnauthorizedException("Wrong password or email");
+			throw new UnauthorizedException("Invalid email or password");
 		}
-		const validPassword = await bcrypt.compare(
+		const verifiedPassword = await bcrypt.compare(
 			signInDto.password,
 			user.password
 		);
-		if (!validPassword) {
-			throw new UnauthorizedException("Wrong password or email");
+		if (!verifiedPassword) {
+			throw new UnauthorizedException("Invalid email or password");
 		}
 		return this.generateToken(user);
 	}

@@ -3,7 +3,7 @@ import { Block } from "../../blocks/models/block.model";
 
 interface IUserCrationAttr {
 	firstName: string;
-	laststName: string;
+	lastName: string;
 	email: string;
 	password: string;
 	photo: string;

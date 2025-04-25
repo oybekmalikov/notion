@@ -9,6 +9,7 @@ import { AdminsService } from "../admins/admins.service";
 import { CreateAdminDto } from "../admins/dto/create-admin.dto";
 import { Admin } from "../admins/models/admin.model";
 import { SignInDto } from "./dto/sign-in.dto";
+
 @Injectable()
 export class AdminAuthService {
 	constructor(
@@ -18,11 +19,15 @@ export class AdminAuthService {
 	private async generateToken(admin: Admin) {
 		const payload = {
 			id: admin.id,
-			email: admin.email,
-			roles: admin.isCreator ? ["admin", "superadmin"] : ["admin"],
 			isActive: admin.isActive,
+			role: admin.isCreator ? "superadmin" : "admin",
 		};
-		return { token: this.jwtService.sign(payload) };
+		try {
+			return { token: this.jwtService.sign(payload) };
+		} catch (err) {
+			console.log(err)
+			return err;
+		}
 	}
 	async signUp(createAdminDto: CreateAdminDto) {
 		const condidate = await this.adminService.findByEmail(createAdminDto.email);
@@ -31,20 +36,20 @@ export class AdminAuthService {
 		}
 		const hashedPassword = await bcrypt.hash(createAdminDto.password, 7);
 		createAdminDto.password = hashedPassword;
-		const newUser = await this.adminService.create(createAdminDto);
-		return newUser;
+		const newAdmin = await this.adminService.create(createAdminDto);
+		return `New admin succesfully added with id: ${newAdmin.id}`;
 	}
 	async signIn(signInDto: SignInDto) {
 		const admin = await this.adminService.findByEmail(signInDto.email);
 		if (!admin) {
-			throw new UnauthorizedException("Wrong password or email");
+			throw new UnauthorizedException("Invalid email or password");
 		}
 		const validPassword = await bcrypt.compare(
 			signInDto.password,
 			admin.password
 		);
 		if (!validPassword) {
-			throw new UnauthorizedException("Wrong password or email");
+			throw new UnauthorizedException("Invalid email or password");
 		}
 		return this.generateToken(admin);
 	}

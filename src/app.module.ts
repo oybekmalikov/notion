@@ -13,8 +13,8 @@ import { Type } from "./types/models/type.model";
 import { TypesModule } from "./types/types.module";
 import { User } from "./users/models/user.model";
 import { UsersModule } from "./users/users.module";
-import { AdminAuthModule } from './admin_auth/admin_auth.module';
 import { UserAuthModule } from './user_auth/user_auth.module';
+import { AdminAuthModule } from './admin_auth/admin_auth.module';
 
 @Module({
 	imports: [

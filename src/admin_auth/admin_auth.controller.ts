@@ -1,18 +1,19 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
-import { CreateAdminDto } from "../admins/dto/create-admin.dto";
 import { AdminAuthService } from "./admin_auth.service";
-import { SignInDto } from './dto/sign-in.dto'
+import { SignInDto } from "./dto/sign-in.dto";
+import { CreateAdminDto } from '../admins/dto/create-admin.dto'
 
 @Controller("admin-auth")
 export class AdminAuthController {
-	constructor(private readonly adminService: AdminAuthService) {}
+	constructor(private readonly adminAuthService: AdminAuthService) {}
+  @HttpCode(HttpStatus.OK)
 	@Post("sign-up")
-	signUp(@Body() createAdminDto: CreateAdminDto) {
-		return this.adminService.signUp(createAdminDto);
+	signUp(@Body() adminDto: CreateAdminDto) {
+		return this.adminAuthService.signUp(adminDto);
 	}
 	@HttpCode(HttpStatus.OK)
 	@Post("sign-in")
 	signIn(@Body() signInDto: SignInDto) {
-		return this.adminService.signIn(signInDto);
+		return this.adminAuthService.signIn(signInDto);
 	}
 }
