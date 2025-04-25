@@ -24,7 +24,7 @@ export class BlockProperty extends Model<
 	@Column({ type: DataType.INTEGER })
 	declare blockId: number;
 	@ForeignKey(() => Propety)
-	@Column({ type: DataType.STRING })
+	@Column({ type: DataType.INTEGER })
 	declare propertyId: number;
 	@Column({ type: DataType.STRING })
 	declare value: string;

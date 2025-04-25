@@ -1,5 +1,14 @@
-import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
+import {
+	BelongsTo,
+	Column,
+	DataType,
+	ForeignKey,
+	HasMany,
+	Model,
+	Table,
+} from "sequelize-typescript";
 import { BlockProperty } from "../../block_properties/models/block_property.model";
+import { User } from "../../users/models/user.model";
 
 interface IBlockCreationAttr {
 	typeId: number;
@@ -16,13 +25,16 @@ export class Block extends Model<Block, IBlockCreationAttr> {
 	})
 	declare id: number;
 	@Column({ type: DataType.INTEGER })
-	typeId: number;
+	declare typeId: number;
+	@ForeignKey(() => User)
 	@Column({ type: DataType.INTEGER })
-	createdBy: number;
+	declare createdBy: number;
 	@Column({ type: DataType.INTEGER })
-	parent: number;
+	declare parent: number;
 	@Column({ type: DataType.INTEGER })
-	orderIndex: number;
+	declare orderIndex: number;
 	@HasMany(() => BlockProperty)
 	blockProperty: BlockProperty;
+	@BelongsTo(() => User)
+	user: User;
 }
