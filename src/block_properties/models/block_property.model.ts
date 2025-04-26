@@ -1,9 +1,9 @@
+import { ApiProperty } from "@nestjs/swagger";
 import {
 	BelongsTo,
 	Column,
 	DataType,
 	ForeignKey,
-	HasMany,
 	Model,
 	Table,
 } from "sequelize-typescript";
@@ -20,13 +20,25 @@ export class BlockProperty extends Model<
 	BlockProperty,
 	IBlockPropertyCreationAttr
 > {
+	@ApiProperty({
+		example: "1",
+		description: "block's id",
+	})
 	@ForeignKey(() => Block)
 	@Column({ type: DataType.INTEGER })
 	declare blockId: number;
+	@ApiProperty({
+		example: "1",
+		description: "prroperty's id",
+	})
 	@ForeignKey(() => Propety)
 	@Column({ type: DataType.INTEGER })
 	declare propertyId: number;
 	@Column({ type: DataType.STRING })
+	@ApiProperty({
+		example: "any value",
+		description: "any value",
+	})
 	declare value: string;
 	@BelongsTo(() => Propety)
 	property: Propety;

@@ -20,7 +20,7 @@ export class AdminAuthService {
 		const payload = {
 			id: admin.id,
 			isActive: admin.isActive,
-			role: admin.isCreator ? "superadmin" : "admin",
+			role: [admin.isCreator ? "superadmin" : "admin"],
 		};
 		try {
 			return { token: this.jwtService.sign(payload) };
