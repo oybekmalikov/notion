@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
 import { Block } from "../../blocks/models/block.model";
+import { Comment } from "../../comments/models/comment.model";
 
 interface IUserCrationAttr {
 	firstName: string;
@@ -66,4 +67,6 @@ export class User extends Model<User, IUserCrationAttr> {
 	declare isActive: boolean;
 	@HasMany(() => Block)
 	block: Block[];
+	@HasMany(() => Comment)
+	comments: Comment[];
 }

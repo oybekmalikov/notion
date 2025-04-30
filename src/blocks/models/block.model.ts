@@ -9,6 +9,7 @@ import {
 	Table,
 } from "sequelize-typescript";
 import { BlockProperty } from "../../block_properties/models/block_property.model";
+import { Comment } from "../../comments/models/comment.model";
 import { User } from "../../users/models/user.model";
 
 interface IBlockCreationAttr {
@@ -58,4 +59,6 @@ export class Block extends Model<Block, IBlockCreationAttr> {
 	blockProperty: BlockProperty;
 	@BelongsTo(() => User)
 	user: User;
+	@HasMany(() => Comment)
+	comments: Comment[];
 }
